@@ -1,0 +1,5 @@
+---
+interface Props { class?: string; direction?: 'right'|'down'|'left'; }
+const {class:className='',direction='right'}=Astro.props;
+---
+<svg class:list={['arrow',className,direction]} width="24" height="14" viewBox="0 0 24 14" fill="none" aria-hidden="true"><path d="M0 7h22M16 1l6 6-6 6" stroke="currentColor" stroke-width="1.2"/></svg>

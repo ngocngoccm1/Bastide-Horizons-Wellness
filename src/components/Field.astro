@@ -1,0 +1,10 @@
+---
+interface Props {name:string;label:string;type?:'text'|'email'|'tel'|'date'|'number';required?:boolean;optional?:string;value?:string;autocomplete?:string;min?:number;options?:{value:string;label:string}[];textarea?:boolean;placeholder?:string;prefix:string;}
+const {name,label,type='text',required=false,optional,value,autocomplete,min,options,textarea=false,placeholder,prefix}=Astro.props;
+const id=`${prefix}-${name}`;
+---
+<div class:list={['field',{'full':textarea||options}]}>
+ <label for={id}>{label}{required?<span aria-hidden="true"> *</span>:optional&&<small> ({optional})</small>}</label>
+ {options ? <select id={id} name={name} required={required} aria-describedby={`${id}-error`}>{options.map(option=><option value={option.value}>{option.label}</option>)}</select> : textarea ? <textarea id={id} name={name} placeholder={placeholder} rows="3" maxlength="3000" aria-describedby={`${id}-error`}/> : <input id={id} name={name} type={type} required={required} value={value} autocomplete={autocomplete} min={min} step={type==='number'?1:undefined} maxlength={['text','tel','email'].includes(type)?150:undefined} aria-describedby={`${id}-error`}/>}
+ <span class="field-error" id={`${id}-error`} aria-live="polite"></span>
+</div>

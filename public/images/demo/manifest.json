@@ -1,0 +1,217 @@
+{
+  "status": "illustrative placeholders only",
+  "notice": "These stock photographs do not depict Bastide Horizons Wellness. Replace with approved property photography before presenting them as the property.",
+  "license": "https://unsplash.com/license",
+  "assets": {
+    "hero": {
+      "credit": "Ryan Klaus",
+      "source": "https://unsplash.com/photos/a-stone-house-nestled-among-lush-greenery-Cp1xFgK4r9A",
+      "originalImageURL": "https://images.unsplash.com/photo-1748382430839-b79a0b08375b",
+      "location": "Provence, France",
+      "license": "https://unsplash.com/license",
+      "placeholder": true,
+      "width": 2400,
+      "height": 3600,
+      "variants": [
+        {
+          "path": "/images/demo/hero-640.webp",
+          "width": 640,
+          "height": 960,
+          "bytes": 106200
+        },
+        {
+          "path": "/images/demo/hero-1200.webp",
+          "width": 1200,
+          "height": 1800,
+          "bytes": 368616
+        },
+        {
+          "path": "/images/demo/hero-1920.webp",
+          "width": 1920,
+          "height": 2880,
+          "bytes": 866066
+        }
+      ]
+    },
+    "architecture": {
+      "credit": "Anastasiia Chepinska",
+      "source": "https://unsplash.com/photos/brown-brick-walled-building-under-white-sky-during-daytime-e6i1MdYm8qc",
+      "originalImageURL": "https://images.unsplash.com/photo-1583275243708-74ae6d38a8ac",
+      "location": "Èze, France",
+      "license": "https://unsplash.com/license",
+      "placeholder": true,
+      "width": 2400,
+      "height": 1602,
+      "variants": [
+        {
+          "path": "/images/demo/architecture-640.webp",
+          "width": 640,
+          "height": 427,
+          "bytes": 62352
+        },
+        {
+          "path": "/images/demo/architecture-1200.webp",
+          "width": 1200,
+          "height": 801,
+          "bytes": 190316
+        },
+        {
+          "path": "/images/demo/architecture-1920.webp",
+          "width": 1920,
+          "height": 1282,
+          "bytes": 426264
+        }
+      ]
+    },
+    "landscape": {
+      "credit": "Léonard Cotte",
+      "source": "https://unsplash.com/photos/lavender-field-c1Jp-fo53U8",
+      "originalImageURL": "https://images.unsplash.com/photo-1499002238440-d264edd596ec",
+      "location": "Drôme, France",
+      "license": "https://unsplash.com/license",
+      "placeholder": true,
+      "width": 2400,
+      "height": 1600,
+      "variants": [
+        {
+          "path": "/images/demo/landscape-640.webp",
+          "width": 640,
+          "height": 427,
+          "bytes": 81050
+        },
+        {
+          "path": "/images/demo/landscape-1200.webp",
+          "width": 1200,
+          "height": 800,
+          "bytes": 263762
+        },
+        {
+          "path": "/images/demo/landscape-1920.webp",
+          "width": 1920,
+          "height": 1280,
+          "bytes": 588870
+        }
+      ]
+    },
+    "bedroom": {
+      "credit": "Clay Banks",
+      "source": "https://unsplash.com/photos/a-neutral-bedroom-with-a-large-bed-and-wooden-wardrobe-Xbe5BfScmvM",
+      "originalImageURL": "https://images.unsplash.com/photo-1758072328635-586f3c121af2",
+      "location": "Red Hook, NY, USA",
+      "license": "https://unsplash.com/license",
+      "placeholder": true,
+      "width": 2400,
+      "height": 1600,
+      "variants": [
+        {
+          "path": "/images/demo/bedroom-640.webp",
+          "width": 640,
+          "height": 427,
+          "bytes": 20426
+        },
+        {
+          "path": "/images/demo/bedroom-1200.webp",
+          "width": 1200,
+          "height": 800,
+          "bytes": 60190
+        },
+        {
+          "path": "/images/demo/bedroom-1920.webp",
+          "width": 1920,
+          "height": 1280,
+          "bytes": 132716
+        }
+      ]
+    },
+    "village": {
+      "credit": "Bo Zhang",
+      "source": "https://unsplash.com/photos/a-village-on-top-of-a-hill-surrounded-by-trees-aqEV4eBXFDI",
+      "originalImageURL": "https://images.unsplash.com/photo-1722616588626-f1a6c231479f",
+      "location": "Gordes, France",
+      "license": "https://unsplash.com/license",
+      "placeholder": true,
+      "width": 2400,
+      "height": 1267,
+      "variants": [
+        {
+          "path": "/images/demo/village-640.webp",
+          "width": 640,
+          "height": 338,
+          "bytes": 40810
+        },
+        {
+          "path": "/images/demo/village-1200.webp",
+          "width": 1200,
+          "height": 634,
+          "bytes": 130732
+        },
+        {
+          "path": "/images/demo/village-1920.webp",
+          "width": 1920,
+          "height": 1014,
+          "bytes": 293728
+        }
+      ]
+    },
+    "olive": {
+      "credit": "Umanoide",
+      "source": "https://unsplash.com/photos/olive-trees-in-a-rocky-sun-dappled-grove-XgIau0gylBY",
+      "originalImageURL": "https://images.unsplash.com/photo-1760474174792-a781aeb001f0",
+      "location": null,
+      "license": "https://unsplash.com/license",
+      "placeholder": true,
+      "width": 2400,
+      "height": 1600,
+      "variants": [
+        {
+          "path": "/images/demo/olive-640.webp",
+          "width": 640,
+          "height": 427,
+          "bytes": 125690
+        },
+        {
+          "path": "/images/demo/olive-1200.webp",
+          "width": 1200,
+          "height": 800,
+          "bytes": 446992
+        },
+        {
+          "path": "/images/demo/olive-1920.webp",
+          "width": 1920,
+          "height": 1280,
+          "bytes": 1074012
+        }
+      ]
+    },
+    "wellness": {
+      "credit": "Jennie Razumnaya",
+      "source": "https://unsplash.com/photos/a-candle-sits-on-a-stack-of-towels-next-to-a-plant-Q8Acb0NuaW8",
+      "originalImageURL": "https://images.unsplash.com/photo-1675149476008-83dbfa2ee917",
+      "location": "Los Angeles, CA, USA",
+      "license": "https://unsplash.com/license",
+      "placeholder": true,
+      "width": 2400,
+      "height": 1600,
+      "variants": [
+        {
+          "path": "/images/demo/wellness-640.webp",
+          "width": 640,
+          "height": 427,
+          "bytes": 26758
+        },
+        {
+          "path": "/images/demo/wellness-1200.webp",
+          "width": 1200,
+          "height": 800,
+          "bytes": 73818
+        },
+        {
+          "path": "/images/demo/wellness-1920.webp",
+          "width": 1920,
+          "height": 1280,
+          "bytes": 185610
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,19 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Arrow from '../../components/Arrow.astro';
+import {brand,languages,type Language} from '../../data/brand';
+import {translations} from '../../data/translations';
+import media from '../../../public/images/demo/manifest.json';
+export function getStaticPaths(){return Object.keys(languages).flatMap(lang=>['legal','privacy','credits'].map(info=>({params:{lang,info}})));}
+const lang=Astro.params.lang as Language;
+const info=Astro.params.info!;
+const t=translations[lang];
+const legalValues=Object.values(brand.legal);
+const title=info==='legal'?t.legal.title:info==='privacy'?t.legal.privacyTitle:t.footer.credits;
+const text=info==='legal'?t.legal.legalText:info==='privacy'?t.legal.privacyText:t.legal.photoText;
+---
+<Layout lang={lang} title={`${title} | Bastide Horizons Wellness`} description={text} inner suffix={`${info}/`}>
+ <main id="main" class="legal-main container"><a href={`/${lang}/`} class="text-link"><Arrow direction="left"/>{t.common.back}</a><p class="eyebrow">{t.legal.eyebrow}</p><h1>{title}</h1>{info!=='credits'&&legalValues.some(value=>!value)&&<p class="legal-notice">{t.legal.pending}</p>}<p>{text}</p>{info!=='credits'&&legalValues.some(Boolean)&&<dl class="legal-details">{legalValues.map((value,i)=>value&&<div><dt>{t.legal.fields[i]}</dt><dd>{value}</dd></div>)}</dl>}{info==='privacy'&&<p>{t.footer.cookiesText}</p>}
+ {info==='credits'?<div class="credits-grid">{Object.entries(media.assets).map(([key,item])=><article><img src={`/images/demo/${key}-640.webp`} alt={t.alts[key as keyof typeof t.alts]} width={item.width} height={item.height} loading="lazy"/><h2>{item.credit}</h2><p>{t.common.demo}</p><a href={item.source} target="_blank" rel="noopener noreferrer">Unsplash <Arrow/></a><a href={item.license} target="_blank" rel="noopener noreferrer">{t.common.license} <Arrow/></a></article>)}</div>:<a href={`/${lang}/credits/`} class="text-link">{t.legal.photoLink}<Arrow/></a>}
+ </main>
+</Layout>

@@ -1,0 +1,65 @@
+[
+  {
+    "family": "Cormorant Garamond",
+    "style": "italic",
+    "subset": "vietnamese",
+    "filename": "cormorant-garamond-italic-vietnamese.woff2",
+    "source": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtHmSq17w.woff2"
+  },
+  {
+    "family": "Cormorant Garamond",
+    "style": "italic",
+    "subset": "latin-ext",
+    "filename": "cormorant-garamond-italic-latin-ext.woff2",
+    "source": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtGmSq17w.woff2"
+  },
+  {
+    "family": "Cormorant Garamond",
+    "style": "italic",
+    "subset": "latin",
+    "filename": "cormorant-garamond-italic-latin.woff2",
+    "source": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3ZmX5slCNuHLi8bLeY9MK7whWMhyjYrEtImSo.woff2"
+  },
+  {
+    "family": "Cormorant Garamond",
+    "style": "normal",
+    "subset": "vietnamese",
+    "filename": "cormorant-garamond-normal-vietnamese.woff2",
+    "source": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYpntKgS4.woff2"
+  },
+  {
+    "family": "Cormorant Garamond",
+    "style": "normal",
+    "subset": "latin-ext",
+    "filename": "cormorant-garamond-normal-latin-ext.woff2",
+    "source": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYp3tKgS4.woff2"
+  },
+  {
+    "family": "Cormorant Garamond",
+    "style": "normal",
+    "subset": "latin",
+    "filename": "cormorant-garamond-normal-latin.woff2",
+    "source": "https://fonts.gstatic.com/s/cormorantgaramond/v21/co3bmX5slCNuHLi8bLeY9MK7whWMhyjYqXtK.woff2"
+  },
+  {
+    "family": "Manrope",
+    "style": "normal",
+    "subset": "vietnamese",
+    "filename": "manrope-normal-vietnamese.woff2",
+    "source": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggixSuXd.woff2"
+  },
+  {
+    "family": "Manrope",
+    "style": "normal",
+    "subset": "latin-ext",
+    "filename": "manrope-normal-latin-ext.woff2",
+    "source": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggmxSuXd.woff2"
+  },
+  {
+    "family": "Manrope",
+    "style": "normal",
+    "subset": "latin",
+    "filename": "manrope-normal-latin.woff2",
+    "source": "https://fonts.gstatic.com/s/manrope/v20/xn7gYHE41ni1AdIRggexSg.woff2"
+  }
+]

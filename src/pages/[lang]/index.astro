@@ -1,0 +1,92 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Picture from '../../components/Picture.astro';
+import Arrow from '../../components/Arrow.astro';
+import Contact from '../../components/Contact.astro';
+import {brand,languages,type Language} from '../../data/brand';
+import {translations} from '../../data/translations';
+import {accommodations,services,pricing,gallery,destinations} from '../../data/content';
+export function getStaticPaths(){return Object.keys(languages).map(lang=>({params:{lang}}));}
+const lang=Astro.params.lang as Language;
+const t=translations[lang];
+const money=(value:number)=>new Intl.NumberFormat(languages[lang].locale,{style:'currency',currency:brand.currency}).format(value);
+const categories=['all','stay','wellness','nature','living'];
+---
+<Layout lang={lang}>
+ <main id="main">
+  <section class="hero" aria-labelledby="hero-title">
+   <Picture image="hero" t={t} class="hero-image" eager sizes="100vw"/>
+   <div class="hero-shade"></div>
+   <div class="hero-content">
+    <p class="eyebrow hero-eyebrow"><span>BASTIDE HORIZONS WELLNESS</span><small>{t.hero.eyebrow}</small></p>
+    <h1 id="hero-title">{t.hero.title}<em>{t.hero.italic}</em><span>{t.hero.end}</span></h1>
+    <p class="hero-copy">{t.hero.copy}</p>
+    <div class="hero-links"><a class="button outline-light" href="#hebergements">{t.hero.discover}<Arrow/></a><a class="hero-secondary" href="#contact">{t.hero.book}</a></div>
+   </div>
+   <div class="hero-bottom"><p>{t.hero.location}</p><a href="#maison">{t.hero.scroll}<Arrow direction="down"/></a><span>{t.common.demo}</span></div>
+  </section>
+  <div class="booking-wrap container">
+   <form class="booking-bar" novalidate aria-label={t.hero.book}>
+    <div class="booking-intro"><span class="eyebrow">BASTIDE HORIZONS</span><p>{t.hero.book}</p></div>
+    <div class="booking-field"><label for="booking-arrival">{t.contact.arrival}</label><input type="date" id="booking-arrival" name="arrival" required aria-describedby="booking-error"/></div>
+    <div class="booking-field"><label for="booking-departure">{t.contact.departure}</label><input type="date" id="booking-departure" name="departure" required aria-describedby="booking-error"/></div>
+    <div class="booking-field guests"><label for="booking-guests">{t.contact.guests}</label><input type="number" id="booking-guests" name="guests" min="1" step="1" value="2" required aria-describedby="booking-error"/></div>
+    <button type="submit" aria-label={t.common.inquire}>{t.common.inquire}<Arrow/></button>
+   </form><p id="booking-error" class="booking-error" role="status" aria-live="polite"></p>
+  </div>
+  <section id="maison" class="story section-pad container">
+   <div class="story-images" data-reveal>
+    <figure class="story-main"><Picture image="architecture" t={t} sizes="(max-width: 700px) 80vw, 35vw"/><figcaption>{t.common.demo}</figcaption></figure>
+    <figure class="story-small"><Picture image="olive" t={t} sizes="(max-width: 700px) 45vw, 20vw"/></figure>
+    <span class="vertical-label">{t.story.side}</span>
+   </div>
+   <div class="story-copy" data-reveal><p class="eyebrow">01 / {t.story.eyebrow}</p><h2>{t.story.title}<em>{t.story.italic}</em></h2><p class="serif-intro">{t.story.intro}</p><p>{t.story.copy}</p><a class="text-link" href="#hebergements">{t.story.link}<Arrow/></a></div>
+   <p class="story-caption">{t.story.caption}</p>
+  </section>
+  <section id="hebergements" class="stay section-pad">
+   <div class="container">
+    <div class="section-heading" data-reveal><div><p class="eyebrow">02 / {t.stay.eyebrow}</p><h2>{t.stay.title}<em>{t.stay.italic}</em></h2></div><p>{t.stay.copy}</p></div>
+    <div class="stay-grid">
+     {accommodations.map((room,i)=><article class:list={['stay-item',{'offset':i===1}]} data-reveal>
+      <button class="image-button stay-photo" data-open-detail={room.id} aria-label={`${t.common.details} — ${t.stay.names[i]}`}><Picture image={room.photos[0]} t={t}/><span class="image-number">0{i+1}</span><span class="image-action"><Arrow/></span></button>
+      <p class="image-caption">{t.common.demo}</p>
+      <div class="stay-item-heading"><h3>{t.stay.names[i]}</h3><button data-open-detail={room.id} class="round-arrow" aria-label={`${t.common.details} — ${t.stay.names[i]}`}><Arrow/></button></div>
+      <p>{t.stay.descriptions[i]}</p><div class="stay-meta"><span>{room.status==='pending'?t.common.pending:t.common.request}</span><button class="text-link" data-open-detail={room.id}>{t.common.details}<Arrow/></button></div>
+     </article>)}
+    </div><p class="section-note">{t.stay.note}</p>
+   </div>
+  </section>
+  <section id="bien-etre" class="wellness">
+   <div class="wellness-upper">
+    <div class="wellness-copy" data-reveal><p class="eyebrow">03 / {t.wellness.eyebrow}</p><h2>{t.wellness.title}<em>{t.wellness.italic}</em></h2><p class="serif-intro">{t.wellness.subtitle}</p><p>{t.wellness.copy}</p><a class="text-link" href="#contact" data-wellness-link>{t.wellness.cta}<Arrow/></a></div>
+    <figure class="wellness-photo"><Picture image="olive" t={t} sizes="(max-width: 700px) 100vw, 55vw"/><figcaption>{t.common.demo}</figcaption><span class="photo-phrase">Bastide Horizons<br/><em>Wellness</em></span></figure>
+   </div>
+   <div class="wellness-bottom container"><div class="wellness-services">{services.map((service,i)=><details class="service"><summary><span class="service-number">0{i+1}</span><h3>{t.wellness.services[i]}</h3><span class="plus" aria-hidden="true">+</span></summary><div class="service-body"><Picture image={service.photo} t={t} sizes="(max-width: 700px) 80vw, 25vw"/><div><p>{t.wellness.descriptions[i]}</p><p class="small-copy">{t.common.duration}: {service.duration===null?t.common.confirm:`${service.duration} ${t.common.minutes}`}<br/>{t.common.price}: {service.price===null?t.common.request:money(service.price)}</p><a class="text-link" href="#contact" data-service={service.id}>{t.common.inquire}<Arrow/></a></div></div></details>)}</div><p class="section-note">{t.wellness.note}</p></div>
+  </section>
+  <section id="provence" class="region section-pad container">
+   <div class="region-heading" data-reveal><p class="eyebrow">04 / {t.region.eyebrow}</p><h2>{t.region.title}<em>{t.region.italic}</em></h2><p>{t.region.copy}</p></div>
+   <div class="destination-grid">{destinations.map((destination,i)=><article class:list={['destination',{'destination-offset':i===1}]} data-reveal><a class="destination-image" href={destination.source} target="_blank" rel="noopener noreferrer" aria-label={`${t.region.link} — ${destination.name}`}><Picture image={destination.image} t={t} sizes="(max-width: 700px) 100vw, 30vw"/><span>0{i+1}</span></a><p class="image-caption">{t.common.demo}</p><h3>{destination.name}</h3><p>{t.region.descriptions[i]}</p><a class="text-link" href={destination.source} target="_blank" rel="noopener noreferrer">{t.region.link}<Arrow/></a></article>)}</div><p class="section-note">{t.region.note}</p>
+  </section>
+  <section class="landscape-interlude" aria-label={t.story.caption}><Picture image="landscape" t={t} sizes="100vw"/><div class="interlude-shade"></div><p>{t.story.caption}</p><span>{t.common.demo}</span></section>
+  <section id="tarifs" class="pricing section-pad container">
+   <div class="section-heading" data-reveal><div><p class="eyebrow">05 / {t.pricing.eyebrow}</p><h2>{t.pricing.title}<em>{t.pricing.italic}</em></h2></div><p>{t.pricing.copy}</p></div>
+   <div class="price-list">{pricing.map((item,i)=><div class="price-row" data-reveal><span class="price-number">0{i+1}</span><div><h3>{t.pricing.names[i]}</h3><p>{t.pricing.descriptions[i]}</p></div><div class="price-amount"><span>{item.amount===null?t.common.request:new Intl.NumberFormat(languages[lang].locale,{style:'currency',currency:item.currency}).format(item.amount)}</span><small>{t.common[item.unit==='night'?'night':item.unit==='session'?'session':'trip']}</small></div><a class="round-arrow" href="#contact" data-wellness-link={item.id==='wellness'?true:undefined} aria-label={`${t.common.inquire} — ${t.pricing.names[i]}`}><Arrow/></a></div>)}</div>
+   <div class="price-bottom"><p class="section-note">{t.pricing.note}</p><span class="small-copy">{t.common.euro}</span></div>
+  </section>
+  <section id="galerie" class="gallery section-pad">
+   <div class="container">
+    <div class="gallery-heading" data-reveal><p class="eyebrow">06 / {t.gallery.eyebrow}</p><h2>{t.gallery.title}<em>{t.gallery.italic}</em></h2></div>
+    <div class="gallery-filters" role="group" aria-label={t.nav.gallery}>{t.gallery.filters.map((label,i)=><button data-filter={categories[i]} aria-pressed={i===0}>{label}</button>)}</div>
+    <div class="gallery-grid">{gallery.map((item,i)=><button class={`gallery-tile tile-${i}`} data-gallery-image={i} data-category={item.category} data-src={`/images/demo/${item.image}-1920.webp`} data-alt={t.alts[item.image]} aria-label={`${t.gallery.open} — ${t.alts[item.image]}`}><Picture image={item.image} t={t} sizes="(max-width: 700px) 50vw, 40vw"/><span class="gallery-expand" aria-hidden="true">↗</span></button>)}</div><p class="section-note">{t.gallery.note}</p>
+   </div>
+  </section>
+  <section id="adresse" class="location section-pad container">
+   <div class="location-copy" data-reveal><p class="eyebrow">07 / {t.location.eyebrow}</p><h2>{t.location.title}<em>{t.location.italic}</em></h2><p>{t.location.copy}</p><address>{brand.address}</address><button class="copy-address text-link" data-copy-address={brand.address}>{t.location.copyAddress}<span aria-hidden="true">⧉</span></button><span class="copy-status small-copy" role="status" aria-live="polite"></span><div class="location-links"><a class="button" href={`https://www.google.com/maps/dir/?api=1&destination=${brand.latitude},${brand.longitude}`} target="_blank" rel="noopener noreferrer">{t.location.directions}<Arrow/></a><a class="text-link" href={brand.maps} target="_blank" rel="noopener noreferrer">{t.location.maps}<Arrow/></a></div></div>
+   <div class="map-container" data-map-container data-map-title={t.location.mapTitle} data-map-url={`https://maps.google.com/maps?q=${brand.latitude},${brand.longitude}&z=15&output=embed&hl=${lang}`}><div class="map-placeholder"><div class="map-grid" aria-hidden="true"><span class="map-marker">BH</span><span class="map-town">PIÉGON</span><span class="map-nyons">NYONS</span></div><div class="map-consent"><button class="button" data-map-load>{t.location.load}<Arrow/></button><p>{t.location.mapNote}</p></div></div></div>
+  </section>
+  <Contact lang={lang} t={t}/>
+ </main>
+ <a class="sticky-booking" href="#contact">{t.nav.book}<Arrow/></a>
+ {accommodations.map((room,i)=><dialog class="detail-dialog" id={`detail-${room.id}`} aria-labelledby={`detail-title-${room.id}`}><button class="close-button" data-close aria-label={t.nav.close}>×</button><div class="detail-gallery"><Picture image={room.photos[0]} t={t} sizes="(max-width: 700px) 95vw, 50vw"/><button class="detail-gallery-prev" data-detail-direction="-1" aria-label={t.common.prev}><Arrow direction="left"/></button><button class="detail-gallery-next" data-detail-direction="1" aria-label={t.common.next}><Arrow/></button><span data-detail-counter>1 / {room.photos.length}</span></div><script type="application/json" data-detail-photos set:html={JSON.stringify(room.photos.map(image=>({src:`/images/demo/${image}-1200.webp`,alt:t.alts[image]})))}/><div class="detail-content"><p class="eyebrow">{t.common.pending}</p><h2 id={`detail-title-${room.id}`}>{t.stay.names[i]}</h2><p>{t.stay.descriptions[i]}</p><dl>{[[t.common.capacity,room.capacity],[t.common.area,room.area===null?null:`${room.area} m²`],[t.common.facilities,room.facilities.length?room.facilities.map(f=>f[lang]).join(', '):null],[t.common.price,room.price===null?null:money(room.price)]].map(([label,value])=><div><dt>{label}</dt><dd>{value??t.common.confirm}</dd></div>)}</dl><p class="small-copy">{t.stay.detailNote}</p><p class="image-caption">{t.common.demo}</p><a class="button" href="#contact" data-room-inquiry={room.id}>{t.common.inquire}<Arrow/></a></div></dialog>)}
+ <dialog class="lightbox" id="lightbox" aria-label={t.nav.gallery}><button class="close-button" data-close aria-label={t.nav.close}>×</button><figure><img id="lightbox-image" src="/images/demo/hero-1200.webp" alt={t.alts.hero} width="1920" height="2880"/><figcaption><span data-lightbox-caption></span><small>{t.common.demo}</small></figcaption></figure><button class="lightbox-prev" aria-label={t.common.prev}><Arrow direction="left"/></button><button class="lightbox-next" aria-label={t.common.next}><Arrow/></button><span class="lightbox-counter" aria-live="polite"></span></dialog>
+</Layout>

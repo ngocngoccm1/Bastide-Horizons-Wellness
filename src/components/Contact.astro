@@ -1,0 +1,47 @@
+---
+import type {Language} from '../data/brand';
+import {brand} from '../data/brand';
+import type {Translation} from '../data/translations';
+import Field from './Field.astro';
+import Arrow from './Arrow.astro';
+interface Props {lang:Language;t:Translation;}
+const {lang,t}=Astro.props;
+---
+<section id="contact" class="contact section-pad">
+ <div class="container contact-layout">
+  <div class="contact-intro" data-reveal><p class="eyebrow">{t.contact.eyebrow}</p><h2>{t.contact.title}<em>{t.contact.italic}</em></h2><p>{t.contact.copy}</p><span class="contact-rule"></span><p class="small-copy">{t.contact.notice}</p></div>
+  <div class="contact-content">
+   <div class="form-tabs" role="tablist" aria-label={t.nav.contact}>
+    <button id="tab-stay" role="tab" aria-selected="true" aria-controls="panel-stay" data-form-tab="stay">{t.contact.stayTab}</button>
+    <button id="tab-wellness" role="tab" aria-selected="false" aria-controls="panel-wellness" tabindex="-1" data-form-tab="wellness">{t.contact.wellnessTab}</button>
+   </div>
+   {(['stay','wellness'] as const).map(kind=><div id={`panel-${kind}`} role="tabpanel" aria-labelledby={`tab-${kind}`} hidden={kind!=='stay'}>
+    <form class="inquiry-form" data-kind={kind} data-endpoint={brand.forms[kind]} novalidate>
+     <p class="form-caption">{t.common.required} * {brand.forms[kind]?'':`— ${t.contact.draft}`}</p>
+     <div class="form-grid">
+      <Field prefix={kind} name="firstName" label={t.contact.first} required autocomplete="given-name"/>
+      <Field prefix={kind} name="lastName" label={t.contact.last} required autocomplete="family-name"/>
+      <Field prefix={kind} name="email" label={t.contact.email} type="email" required autocomplete="email"/>
+      <Field prefix={kind} name="phone" label={t.contact.phone} type="tel" optional={t.common.optional} autocomplete="tel"/>
+      {kind==='stay'?<>
+       <Field prefix={kind} name="arrival" label={t.contact.arrival} type="date" required/>
+       <Field prefix={kind} name="departure" label={t.contact.departure} type="date" required/>
+       <Field prefix={kind} name="guests" label={t.contact.guests} type="number" required min={1} value="2"/>
+       <Field prefix={kind} name="accommodation" label={t.contact.preference} options={[{value:'',label:t.common.choose},...t.stay.names.map((label,i)=>({value:['chambres','gites'][i],label}))]}/>
+      </>:<>
+       <Field prefix={kind} name="date" label={t.contact.date} type="date" required/>
+       <Field prefix={kind} name="participants" label={t.contact.participants} type="number" required min={1} value="1"/>
+       <Field prefix={kind} name="service" label={t.contact.service} options={[{value:'',label:t.contact.none},...t.wellness.services.map((label,i)=>({value:['soins','rituels','detente','experiences'][i],label}))]}/>
+      </>}
+      <Field prefix={kind} name="message" label={t.contact.message} textarea placeholder={t.contact.messagePlaceholder}/>
+     </div>
+     <div class="consent"><label for={`${kind}-consent`}><input type="checkbox" name="consent" id={`${kind}-consent`} required aria-describedby={`${kind}-consent-error`}/><span>{t.contact.consent} *</span></label><span class="field-error" id={`${kind}-consent-error`} aria-live="polite"></span><a href={`/${lang}/privacy/`}>{t.contact.privacy}</a></div>
+     <div class="honeypot" aria-hidden="true"><label>Website<input name="_gotcha" tabindex="-1" autocomplete="off"/></label></div>
+     <input type="hidden" name="language" value={lang}/><input type="hidden" name="inquiryType" value={kind}/>
+     <button class="button submit" type="submit"><span data-submit-text>{t.contact.submit}</span><Arrow/></button>
+     <p class="form-status" role="status" aria-live="polite" tabindex="-1"></p>
+    </form>
+   </div>)}
+  </div>
+ </div>
+</section>

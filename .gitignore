@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.env
+.env.*
+!.env.example
+qa/*.png
+qa/*.json
+.openai/*.local.json
+.openai/*.tar.gz

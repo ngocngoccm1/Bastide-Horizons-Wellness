@@ -1,0 +1,10 @@
+import {test} from 'node:test';
+import assert from 'node:assert/strict';
+import {validateValue,validateDates,localToday} from '../src/scripts/validation.ts';
+const today='2026-10-10';
+test('departure must be strictly later than arrival',()=>{assert.equal(validateDates('2026-10-12','2026-10-11'),'dateError');assert.equal(validateDates('2026-10-12','2026-10-12'),'dateError');assert.equal(validateDates('2026-10-12','2026-10-13'),null);});
+test('required input, consent, and email cannot bypass validation',()=>{assert.equal(validateValue('firstName','  ',true,today),'requiredError');assert.equal(validateValue('consent','',true,today),'consentError');assert.equal(validateValue('email','person@',true,today),'emailError');assert.equal(validateValue('email','person@example.org',true,today),null);});
+test('guests and participants must be positive whole numbers',()=>{for(const value of ['0','-1','1.5','no','Infinity'])assert.equal(validateValue('guests',value,true,today),'numberError');assert.equal(validateValue('participants','3',true,today),null);});
+test('past dates rejected; today allowed',()=>{assert.equal(validateValue('date','2026-10-09',true,today),'pastError');assert.equal(validateValue('arrival',today,true,today),null);});
+test('local date uses local calendar, not UTC conversion',()=>{const date=new Date(2026,9,10,0,0);assert.equal(localToday(date),today);});
+test('impossible calendar dates are rejected',()=>{assert.equal(validateValue('date','2027-02-30',true,today),'requiredError');});

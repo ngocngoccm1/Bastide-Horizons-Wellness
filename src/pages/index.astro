@@ -1,0 +1,4 @@
+---
+import {languages} from '../data/brand';
+---
+<!doctype html><html lang="fr-FR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Bastide Horizons Wellness</title><meta http-equiv="refresh" content="0;url=/fr/"/><link rel="canonical" href={new URL('/fr/',Astro.site)}/><script is:inline>try{const l=localStorage.getItem('bastide-language');if(['fr','en','nl','de','vi'].includes(l))location.replace('/'+l+'/');else location.replace('/fr/')}catch{location.replace('/fr/')}</script></head><body><a href="/fr/">Bastide Horizons Wellness — Français</a><nav>{Object.entries(languages).map(([code,l])=><a href={`/${code}/`}>{l.name}</a>)}</nav></body></html>
