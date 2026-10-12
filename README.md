@@ -87,3 +87,4 @@ Framework preset Astro; build `npm run build`, output `dist`, Node 22.19+. Nhậ
 ## Kiểm tra bàn giao
 
 Sáu unit tests kiểm tra ngày hợp lệ, email, consent và số khách. Script `qa/browser.mjs` kiểm tra năm ngôn ngữ, metadata, ảnh, overflow ở nhiều độ rộng, mobile menu, lightbox, booking, validation và trạng thái form. Thành công/lỗi dịch vụ được kiểm tra bằng phản hồi mock trong trình duyệt; đây không phải bằng chứng email thực tế đã được giao. Chi tiết kết quả trong `QA.md`.
+"# Bastide-Horizons-Wellness" 
