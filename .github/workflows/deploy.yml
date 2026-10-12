@@ -23,9 +23,11 @@ jobs:
       - run: npm test
       - run: npm run build
         env:
-          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL || 'https://ngocngoccm1.github.io' }}
+          PUBLIC_BASE_PATH: ${{ vars.PUBLIC_BASE_PATH || '/Bastide-Horizons-Wellness/' }}
           PUBLIC_STAY_FORM_ENDPOINT: ${{ vars.PUBLIC_STAY_FORM_ENDPOINT }}
           PUBLIC_WELLNESS_FORM_ENDPOINT: ${{ vars.PUBLIC_WELLNESS_FORM_ENDPOINT }}
+      - run: test -f index.html && test -f dist/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

@@ -1,8 +1,9 @@
 ---
 import type { Translation } from '../data/translations';
 import media from '../../public/images/demo/manifest.json';
+import {sitePath} from '../data/paths';
 interface Props {image:keyof Translation['alts'];t:Translation;class?:string;eager?:boolean;sizes?:string;}
 const {image,t,class:className='',eager=false,sizes='(max-width: 700px) 100vw, 50vw'}=Astro.props;
 const {width,height}=media.assets[image];
 ---
-<img class={className} src={`/images/demo/${image}-1200.webp`} srcset={`/images/demo/${image}-640.webp 640w, /images/demo/${image}-1200.webp 1200w, /images/demo/${image}-1920.webp 1920w`} sizes={sizes} alt={t.alts[image]} width={width} height={height} loading={eager?'eager':'lazy'} decoding="async" fetchpriority={eager?'high':'auto'}/>
+<img class={className} src={sitePath(`images/demo/${image}-1200.webp`)} srcset={`${sitePath(`images/demo/${image}-640.webp`)} 640w, ${sitePath(`images/demo/${image}-1200.webp`)} 1200w, ${sitePath(`images/demo/${image}-1920.webp`)} 1920w`} sizes={sizes} alt={t.alts[image]} width={width} height={height} loading={eager?'eager':'lazy'} decoding="async" fetchpriority={eager?'high':'auto'}/>

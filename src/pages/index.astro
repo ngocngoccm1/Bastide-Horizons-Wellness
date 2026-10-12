@@ -1,4 +1,21 @@
 ---
 import {languages} from '../data/brand';
+import {basePath,sitePath} from '../data/paths';
 ---
-<!doctype html><html lang="fr-FR"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Bastide Horizons Wellness</title><meta http-equiv="refresh" content="0;url=/fr/"/><link rel="canonical" href={new URL('/fr/',Astro.site)}/><script is:inline>try{const l=localStorage.getItem('bastide-language');if(['fr','en','nl','de','vi'].includes(l))location.replace('/'+l+'/');else location.replace('/fr/')}catch{location.replace('/fr/')}</script></head><body><a href="/fr/">Bastide Horizons Wellness — Français</a><nav>{Object.entries(languages).map(([code,l])=><a href={`/${code}/`}>{l.name}</a>)}</nav></body></html>
+<!doctype html>
+<html lang="fr-FR" data-base={basePath}>
+ <head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Bastide Horizons Wellness</title>
+  <link rel="canonical" href={new URL(sitePath('fr/'),Astro.site)}/>
+  <meta http-equiv="refresh" content={`0;url=${sitePath('fr/')}`}/>
+  <script is:inline>
+   const base=document.documentElement.dataset.base;
+   let lang='fr';
+   try {const saved=localStorage.getItem('bastide-language');if(['fr','en','nl','de','vi'].includes(saved))lang=saved;} catch {}
+   location.replace(`${base}${lang}/`);
+  </script>
+ </head>
+ <body><a href={sitePath('fr/')}>Bastide Horizons Wellness — Français</a><nav>{Object.entries(languages).map(([code,l])=><a href={sitePath(`${code}/`)}>{l.name}</a>)}</nav></body>
+</html>

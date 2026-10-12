@@ -1,6 +1,6 @@
 # Bastide Horizons Wellness
 
-Website Astro + TypeScript statique, cinq langues complètes : `/fr/`, `/en/`, `/nl/`, `/de/`, `/vi/`. Direction artistique éditoriale française, photographies locales WebP, polices locales, aucune dépendance React ni outil analytique.
+Website Astro + TypeScript statique, cinq langues complètes sous `/Bastide-Horizons-Wellness/` sur GitHub Pages : `fr/`, `en/`, `nl/`, `de/`, `vi/`. Direction artistique éditoriale française, photographies locales WebP, polices locales, aucune dépendance React ni outil analytique.
 
 ## Chạy trên máy
 
@@ -11,7 +11,7 @@ npm ci
 npm run dev
 ```
 
-Mở `http://localhost:4321/fr/`. Trang gốc đưa người dùng về tiếng Pháp hoặc ngôn ngữ đã lưu. Mỗi URL ngôn ngữ được dựng HTML riêng và truy cập trực tiếp được.
+Mở `http://localhost:4321/Bastide-Horizons-Wellness/fr/`. Trang gốc `/Bastide-Horizons-Wellness/` đưa người dùng về tiếng Pháp hoặc ngôn ngữ đã lưu. Mỗi URL ngôn ngữ được dựng HTML riêng và truy cập trực tiếp được.
 
 ```sh
 npm run check
@@ -20,7 +20,7 @@ npm run build
 npm run preview
 ```
 
-Kết quả static trong `dist/`; không cần server Node khi deploy. Đã có khóa phiên bản trong `package-lock.json`. Nếu đổi từ WSL/Linux sang Windows, xóa `node_modules` rồi chạy lại `npm ci` để nhận đúng native binaries.
+Kết quả static trong `dist/`, gồm `dist/index.html` làm entry point GitHub Pages; không cần server Node khi deploy. Repository cũng có `index.html` ở gốc theo yêu cầu. Nguồn Pages phải là **GitHub Actions** để xuất bản đầy đủ `dist/` cùng các route và asset; không chọn “Deploy from a branch” trỏ vào source code. Đã có khóa phiên bản trong `package-lock.json`. Nếu đổi từ WSL/Linux sang Windows, xóa `node_modules` rồi chạy lại `npm ci` để nhận đúng native binaries.
 
 ## Cấu trúc nội dung
 
@@ -45,7 +45,8 @@ Sao chép `.env.example` thành `.env`. Tạo hai form ở Formspree và xác nh
 ```dotenv
 PUBLIC_STAY_FORM_ENDPOINT=https://formspree.io/f/ID_LUU_TRU
 PUBLIC_WELLNESS_FORM_ENDPOINT=https://formspree.io/f/ID_WELLNESS
-PUBLIC_SITE_URL=https://TEN_MIEN_CHINH_THUC
+PUBLIC_SITE_URL=https://ngocngoccm1.github.io
+PUBLIC_BASE_PATH=/Bastide-Horizons-Wellness/
 ```
 
 Hai giá trị `ID_...` trên chỉ là ký hiệu minh họa, **không phải endpoint hoạt động**. Có thể dùng dịch vụ tương đương hỗ trợ POST `FormData`, CORS và phản hồi JSON. Cần build lại sau khi thay các biến `PUBLIC_*` vì đây là website static. Đây là URL công khai; không đặt token hay khóa bí mật trong biến `PUBLIC_*`.
@@ -62,7 +63,7 @@ Trước khi bật form, hoàn thiện chính sách dữ liệu và kiểm thử
 
 ## SEO
 
-Mỗi trang/ngôn ngữ có title, description, canonical, hreflang, Open Graph, alt và HTML độc lập. `LodgingBusiness` chỉ chứa tên, địa chỉ và tọa độ đã cung cấp; không dùng ảnh stock như ảnh doanh nghiệp trong structured data. Astro tạo `sitemap-index.xml` và sitemap chứa đủ năm ngôn ngữ; endpoint `robots.txt` trỏ đúng sitemap. Cấu hình `PUBLIC_SITE_URL` bằng domain cuối cùng và build lại trước khi xuất bản công khai. Domain mặc định hiện là địa chỉ bản xem riêng Sites, không phải domain chính thức của doanh nghiệp.
+Mỗi trang/ngôn ngữ có title, description, canonical, hreflang, Open Graph, alt và HTML độc lập. `LodgingBusiness` chỉ chứa tên, địa chỉ và tọa độ đã cung cấp; không dùng ảnh stock như ảnh doanh nghiệp trong structured data. Astro tạo `sitemap-index.xml` và sitemap chứa đủ năm ngôn ngữ; endpoint `robots.txt` trỏ đúng sitemap. Mặc định `PUBLIC_SITE_URL` là `https://ngocngoccm1.github.io` và `PUBLIC_BASE_PATH` là `/Bastide-Horizons-Wellness/`. Đây là host triển khai, chưa phải domain chính thức của doanh nghiệp.
 
 Bản đồ dùng tọa độ từ Google Maps do khách cung cấp: 44.2974709, 5.1158487. Không tải iframe cho đến khi người xem nhấn hiển thị. Không cài analytics hay cookie quảng cáo. Chỉ ngôn ngữ được lưu qua localStorage; tùy chọn footer cho phép tắt iframe bản đồ.
 
@@ -70,15 +71,17 @@ Bản đồ dùng tọa độ từ Google Maps do khách cung cấp: 44.2974709,
 
 ### Netlify
 
-Đã có `netlify.toml`: build `npm run build`, publish `dist`, Node 22. Thiết lập các biến môi trường trong dashboard rồi deploy repository. Không cần SPA fallback.
+Đã có `netlify.toml`: build `npm run build`, publish `dist`, Node 22.19+. Nếu dùng Netlify, đặt `PUBLIC_SITE_URL` bằng origin Netlify hoặc domain riêng và `PUBLIC_BASE_PATH=/`, rồi deploy repository. Không cần SPA fallback.
 
 ### Cloudflare Pages
 
-Framework preset Astro; build `npm run build`, output `dist`, Node 22.19+. Nhập `PUBLIC_SITE_URL` và hai endpoint form trong build environment. Deploy static không cần adapter hoặc Worker.
+Framework preset Astro; build `npm run build`, output `dist`, Node 22.19+. Nhập `PUBLIC_SITE_URL`, `PUBLIC_BASE_PATH=/` và hai endpoint form trong build environment. Deploy static không cần adapter hoặc Worker.
 
 ### GitHub Pages
 
-Đã có `.github/workflows/deploy.yml`. Bật Settings → Pages → GitHub Actions. Khai báo repository variable `PUBLIC_SITE_URL` và các form endpoint. Workflow mặc định phù hợp domain riêng hoặc site tại root `OWNER.github.io`. Với repository Pages dạng `/repository/`, cấu hình `base` trong Astro, đổi đường dẫn asset/link hiện đang từ root, rồi kiểm tra mọi ngôn ngữ; không deploy bản root trực tiếp vào subpath. Khuyến nghị custom domain để giữ URL `/fr/…` như yêu cầu.
+Workflow `.github/workflows/deploy.yml` chạy khi push vào `main`: test, build Astro, upload toàn bộ `dist/` (bao gồm `index.html`) rồi deploy. Nguồn tại **Settings → Pages → Build and deployment** đã được chuyển sang **GitHub Actions**. URL dự kiến: `https://ngocngoccm1.github.io/Bastide-Horizons-Wellness/`; trang gốc tự chuyển đến `/Bastide-Horizons-Wellness/fr/` hoặc ngôn ngữ đã lưu. Không cần commit thư mục `dist/`.
+
+`site` và `base` mặc định khớp với repository này; link, ảnh, font, sitemap và SEO đều tính cả đường dẫn `/Bastide-Horizons-Wellness/`. Có thể đặt repository variables `PUBLIC_SITE_URL` và `PUBLIC_BASE_PATH` để đổi host. Khi dùng custom domain ở root, đặt `PUBLIC_SITE_URL=https://TEN_MIEN_CHINH_THUC` và `PUBLIC_BASE_PATH=/`, đồng thời cấu hình DNS và custom domain trong GitHub Pages. Endpoint form `PUBLIC_STAY_FORM_ENDPOINT` và `PUBLIC_WELLNESS_FORM_ENDPOINT` cũng nhập ở repository variables sau khi đã xác minh nơi nhận. Form để trống sẽ báo chưa khả dụng, không hiện thành công giả.
 
 ### Sites
 

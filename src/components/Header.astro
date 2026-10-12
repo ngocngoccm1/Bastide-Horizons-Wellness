@@ -2,24 +2,25 @@
 import Wordmark from './Wordmark.astro';
 import {languages,type Language} from '../data/brand';
 import type {Translation} from '../data/translations';
+import {sitePath} from '../data/paths';
 interface Props {lang:Language;t:Translation;inner?:boolean;suffix?:string;}
 const {lang,t,inner=false,suffix=''}=Astro.props;
 const items=[['maison',t.nav.house],['hebergements',t.nav.stay],['bien-etre',t.nav.wellness],['provence',t.nav.region]];
 ---
 <a class="skip-link" href="#main">{t.nav.skip}</a>
 <header class:list={['site-header',{inner}]}>
- <Wordmark href={`/${lang}/`}/>
- <nav class="desktop-nav" aria-label={t.footer.explore}>{items.map(([id,label])=><a href={`/${lang}/#${id}`}>{label}</a>)}</nav>
+ <Wordmark href={sitePath(`${lang}/`)}/>
+ <nav class="desktop-nav" aria-label={t.footer.explore}>{items.map(([id,label])=><a href={sitePath(`${lang}/#${id}`)}>{label}</a>)}</nav>
  <div class="header-actions">
-  <label class="language-control"><span class="sr-only">{t.nav.language}</span><select data-language aria-label={t.nav.language}>{Object.keys(languages).map(code=><option value={`/${code}/${suffix}`} selected={code===lang}>{code.toUpperCase()}</option>)}</select></label>
-  <a class="header-book" href={`/${lang}/#contact`}>{t.nav.book}</a>
+  <label class="language-control"><span class="sr-only">{t.nav.language}</span><select data-language aria-label={t.nav.language}>{Object.keys(languages).map(code=><option value={sitePath(`${code}/${suffix}`)} selected={code===lang}>{code.toUpperCase()}</option>)}</select></label>
+  <a class="header-book" href={sitePath(`${lang}/#contact`)}>{t.nav.book}</a>
   <button class="menu-toggle" aria-label={t.nav.menu} aria-haspopup="dialog" aria-expanded="false" aria-controls="mobile-menu"><span></span><span></span></button>
  </div>
 </header>
 <dialog class="mobile-menu" id="mobile-menu" aria-label={t.nav.menu}>
- <div class="menu-top"><Wordmark href={`/${lang}/`}/><button data-close class="close-button" aria-label={t.nav.close}>×</button></div>
+ <div class="menu-top"><Wordmark href={sitePath(`${lang}/`)}/><button data-close class="close-button" aria-label={t.nav.close}>×</button></div>
  <nav aria-label={t.footer.explore}>
-  {[...items,['galerie',t.nav.gallery],['contact',t.nav.contact]].map(([id,label],i)=><a href={`/${lang}/#${id}`}><small>0{i+1}</small>{label}</a>)}
+  {[...items,['galerie',t.nav.gallery],['contact',t.nav.contact]].map(([id,label],i)=><a href={sitePath(`${lang}/#${id}`)}><small>0{i+1}</small>{label}</a>)}
  </nav>
- <div class="menu-bottom"><p>{t.hero.location}</p><div class="menu-languages">{Object.entries(languages).map(([code,l])=><a href={`/${code}/${suffix}`} lang={l.locale} hreflang={l.locale} data-language-link aria-current={code===lang?'true':undefined}>{code.toUpperCase()}</a>)}</div><a class="button light" href={`/${lang}/#contact`}>{t.nav.book}</a></div>
+ <div class="menu-bottom"><p>{t.hero.location}</p><div class="menu-languages">{Object.entries(languages).map(([code,l])=><a href={sitePath(`${code}/${suffix}`)} lang={l.locale} hreflang={l.locale} data-language-link aria-current={code===lang?'true':undefined}>{code.toUpperCase()}</a>)}</div><a class="button light" href={sitePath(`${lang}/#contact`)}>{t.nav.book}</a></div>
 </dialog>

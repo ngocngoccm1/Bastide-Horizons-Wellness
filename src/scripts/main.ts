@@ -6,7 +6,7 @@ const $$=<T extends HTMLElement=HTMLElement>(selector:string,parent:ParentNode=d
 const reduceMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
 const today=localToday();
 $$<HTMLInputElement>('input[type="date"]').forEach(input=>input.min=today);
-function rememberLanguage(href:string){try{localStorage.setItem('bastide-language',new URL(href,location.href).pathname.split('/')[1]);}catch{/* Browsing works even when storage is unavailable. */}}
+function rememberLanguage(href:string){try{const path=new URL(href,location.href).pathname;const base=import.meta.env.BASE_URL.replace(/\/?$/, '/');localStorage.setItem('bastide-language',path.slice(base.length).split('/')[0]);}catch{/* Browsing works even when storage is unavailable. */}}
 $$<HTMLSelectElement>('[data-language]').forEach(select=>select.addEventListener('change',()=>{const href=select.value+location.hash;rememberLanguage(href);location.assign(href);}));
 $$<HTMLAnchorElement>('[data-language-link]').forEach(link=>link.addEventListener('click',()=>rememberLanguage(link.href)));
 try{localStorage.setItem('bastide-language',document.body.dataset.lang||'fr');}catch{}

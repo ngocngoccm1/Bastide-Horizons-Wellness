@@ -4,6 +4,7 @@ import {brand} from '../data/brand';
 import type {Translation} from '../data/translations';
 import Field from './Field.astro';
 import Arrow from './Arrow.astro';
+import {sitePath} from '../data/paths';
 interface Props {lang:Language;t:Translation;}
 const {lang,t}=Astro.props;
 ---
@@ -35,7 +36,7 @@ const {lang,t}=Astro.props;
       </>}
       <Field prefix={kind} name="message" label={t.contact.message} textarea placeholder={t.contact.messagePlaceholder}/>
      </div>
-     <div class="consent"><label for={`${kind}-consent`}><input type="checkbox" name="consent" id={`${kind}-consent`} required aria-describedby={`${kind}-consent-error`}/><span>{t.contact.consent} *</span></label><span class="field-error" id={`${kind}-consent-error`} aria-live="polite"></span><a href={`/${lang}/privacy/`}>{t.contact.privacy}</a></div>
+     <div class="consent"><label for={`${kind}-consent`}><input type="checkbox" name="consent" id={`${kind}-consent`} required aria-describedby={`${kind}-consent-error`}/><span>{t.contact.consent} *</span></label><span class="field-error" id={`${kind}-consent-error`} aria-live="polite"></span><a href={sitePath(`${lang}/privacy/`)}>{t.contact.privacy}</a></div>
      <div class="honeypot" aria-hidden="true"><label>Website<input name="_gotcha" tabindex="-1" autocomplete="off"/></label></div>
      <input type="hidden" name="language" value={lang}/><input type="hidden" name="inquiryType" value={kind}/>
      <button class="button submit" type="submit"><span data-submit-text>{t.contact.submit}</span><Arrow/></button>

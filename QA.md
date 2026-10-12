@@ -1,6 +1,6 @@
-# Kiểm tra bàn giao — 10/10/2026
+# Kiểm tra bàn giao — 12/10/2026
 
-Đã kiểm tra bản build static được phục vụ tại localhost, bằng Chromium/Playwright.
+Đã kiểm tra bản build static theo đúng subpath GitHub Pages `/Bastide-Horizons-Wellness/` được phục vụ tại localhost, bằng Chromium/Playwright.
 
 | Hạng mục | Kết quả |
 | --- | --- |
@@ -13,7 +13,7 @@
 | Lỗi console / JavaScript | 0 / 0 |
 | Ảnh không tải được | 0, kể cả ảnh trong accordion và modal |
 | Horizontal overflow | 0 ở toàn bộ tổ hợp đã kiểm tra |
-| Sitemap | 20 URL canonical; mỗi URL có 5 hreflang và x-default, không trùng |
+| Sitemap | 20 URL canonical trong subpath; mỗi URL có 5 hreflang và x-default, không trùng |
 | Dependency audit | 0 vulnerabilities ở lần kiểm tra hiện tại |
 | JavaScript client | Khoảng 9.5 KB trước nén, không framework runtime |
 
@@ -25,4 +25,4 @@ Bài kiểm tra trạng thái tiếp nhận form dùng phản hồi mock thành 
 
 Các giới hạn được công bố: ảnh hiện tại chỉ minh họa; thông tin phòng, tiện nghi, giá và dịch vụ cần xác nhận; trang pháp lý/bảo mật cần nội dung kinh doanh chính thức; domain chính thức chưa được cung cấp. Xem `CLIENT-CHECKLIST.md`.
 
-Chạy lại: `npm test`, `npm run build`; phục vụ `dist/`, đặt `QA_URL` tương ứng rồi `npm run test:browser`. Nếu chưa có trình duyệt Playwright, cài Chromium bằng `npx playwright install chromium` hoặc đặt `PLAYWRIGHT_CHROMIUM_EXECUTABLE` trỏ đến Chromium đã cài. Không build lại vào cùng `dist/` trong lúc kiểm tra trình duyệt đang đọc bản đó.
+Chạy lại: `npm test`, `npm run build`; phục vụ `dist/` tại `/Bastide-Horizons-Wellness/`, đặt `QA_URL` bằng origin và `QA_BASE=Bastide-Horizons-Wellness` rồi `npm run test:browser`. Nếu chưa có trình duyệt Playwright, cài Chromium bằng `npx playwright install chromium` hoặc đặt `PLAYWRIGHT_CHROMIUM_EXECUTABLE` trỏ đến Chromium đã cài. Không build lại vào cùng `dist/` trong lúc kiểm tra trình duyệt đang đọc bản đó.

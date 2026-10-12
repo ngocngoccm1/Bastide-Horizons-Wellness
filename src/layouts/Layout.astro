@@ -4,28 +4,29 @@ import {brand,languages,type Language} from '../data/brand';
 import {translations} from '../data/translations';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import {sitePath} from '../data/paths';
 interface Props {lang:Language;title?:string;description?:string;inner?:boolean;suffix?:string;}
 const {lang,title,description,inner=false,suffix=''}=Astro.props;
 const t=translations[lang];
 const origin=Astro.site!;
-const canonical=new URL(`/${lang}/${suffix}`,origin);
-const schema={"@context":"https://schema.org","@type":"LodgingBusiness",name:brand.name,url:new URL(`/${lang}/`,origin).href,address:{'@type':'PostalAddress',streetAddress:'293 Les Combes O',postalCode:'26110',addressLocality:'Piégon',addressRegion:'Drôme',addressCountry:'FR'},geo:{'@type':'GeoCoordinates',latitude:brand.latitude,longitude:brand.longitude}};
+const canonical=new URL(sitePath(`${lang}/${suffix}`),origin);
+const schema={"@context":"https://schema.org","@type":"LodgingBusiness",name:brand.name,url:new URL(sitePath(`${lang}/`),origin).href,address:{'@type':'PostalAddress',streetAddress:'293 Les Combes O',postalCode:'26110',addressLocality:'Piégon',addressRegion:'Drôme',addressCountry:'FR'},geo:{'@type':'GeoCoordinates',latitude:brand.latitude,longitude:brand.longitude}};
 ---
 <!doctype html>
 <html lang={languages[lang].locale}>
  <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>{title||t.seo.title}</title><meta name="description" content={description||t.seo.description}/>
-  <meta name="theme-color" content="#333829"/><link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+  <meta name="theme-color" content="#333829"/><link rel="icon" href={sitePath('favicon.svg')} type="image/svg+xml"/>
   <link rel="canonical" href={canonical}/>
-  {Object.entries(languages).map(([code,l])=><link rel="alternate" hreflang={l.locale} href={new URL(`/${code}/${suffix}`,origin)}/>)}
-  <link rel="alternate" hreflang="x-default" href={new URL(`/fr/${suffix}`,origin)}/>
-  <meta property="og:type" content="website"/><meta property="og:title" content={title||t.seo.title}/><meta property="og:description" content={description||t.seo.description}/><meta property="og:url" content={canonical}/><meta property="og:site_name" content={brand.name}/><meta property="og:locale" content={languages[lang].locale.replace('-','_')}/><meta property="og:image" content={new URL('/images/demo/hero-1200.webp',origin)}/><meta property="og:image:alt" content={t.alts.hero}/>
+  {Object.entries(languages).map(([code,l])=><link rel="alternate" hreflang={l.locale} href={new URL(sitePath(`${code}/${suffix}`),origin)}/>)}
+  <link rel="alternate" hreflang="x-default" href={new URL(sitePath(`fr/${suffix}`),origin)}/>
+  <meta property="og:type" content="website"/><meta property="og:title" content={title||t.seo.title}/><meta property="og:description" content={description||t.seo.description}/><meta property="og:url" content={canonical}/><meta property="og:site_name" content={brand.name}/><meta property="og:locale" content={languages[lang].locale.replace('-','_')}/><meta property="og:image" content={new URL(sitePath('images/demo/hero-1200.webp'),origin)}/><meta property="og:image:alt" content={t.alts.hero}/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <link rel="preload" href="/fonts/cormorant-garamond-normal-latin.woff2" as="font" type="font/woff2" crossorigin/>
-  <link rel="preload" href="/fonts/cormorant-garamond-italic-latin.woff2" as="font" type="font/woff2" crossorigin/>
-  <link rel="preload" href="/fonts/manrope-normal-latin.woff2" as="font" type="font/woff2" crossorigin/>
-  <link rel="stylesheet" href="/fonts/fonts.css"/>
+  <link rel="preload" href={sitePath('fonts/cormorant-garamond-normal-latin.woff2')} as="font" type="font/woff2" crossorigin/>
+  <link rel="preload" href={sitePath('fonts/cormorant-garamond-italic-latin.woff2')} as="font" type="font/woff2" crossorigin/>
+  <link rel="preload" href={sitePath('fonts/manrope-normal-latin.woff2')} as="font" type="font/woff2" crossorigin/>
+  <link rel="stylesheet" href={sitePath('fonts/fonts.css')}/>
   <script type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g,'\\u003c')}/>
  </head>
  <body data-lang={lang}>

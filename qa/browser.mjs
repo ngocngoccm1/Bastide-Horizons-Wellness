@@ -2,7 +2,9 @@ import {chromium} from 'playwright';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {existsSync} from 'node:fs';
-const origin=process.env.QA_URL||'http://localhost:4321';
+const origin=(process.env.QA_URL||'http://localhost:4321').replace(/\/$/,'');
+const base=`/${(process.env.QA_BASE||'Bastide-Horizons-Wellness').replace(/^\/+|\/+$/g,'')}/`;
+const rootUrl=`${origin}${base}`;
 const browser=await chromium.launch({executablePath:process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE||(existsSync('/home/noc/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome')?'/home/noc/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome':undefined),headless:true,args:['--no-sandbox']});
 const report={checks:[],consoleErrors:[],pageErrors:[],overflows:[],brokenImages:[]};
 const context=await browser.newContext({viewport:{width:1440,height:1000},permissions:['clipboard-read','clipboard-write']});
@@ -11,7 +13,7 @@ let recordConsole=true;
 page.on('pageerror',error=>report.pageErrors.push(error.message));
 page.on('console',message=>{if(recordConsole&&message.type()==='error')report.consoleErrors.push(message.text());});
 async function check(name,fn){await fn();report.checks.push(name);console.log('PASS',name);}
-async function render(lang,width,height=900){await page.setViewportSize({width,height});await page.goto(`${origin}/${lang}/`,{waitUntil:'networkidle'});await page.evaluate(()=>document.fonts.ready);}
+async function render(lang,width,height=900){await page.setViewportSize({width,height});await page.goto(`${rootUrl}${lang}/`,{waitUntil:'networkidle'});await page.evaluate(()=>document.fonts.ready);}
 async function revealAndLoad(){
  await page.evaluate(async()=>{for(let y=0;y<document.documentElement.scrollHeight;y+=650){window.scrollTo({top:y,behavior:'instant'});await new Promise(resolve=>setTimeout(resolve,65));}});
  await page.waitForTimeout(450);
@@ -25,7 +27,7 @@ try{
    if(overflow.scroll>width)report.overflows.push({lang,width,...overflow});
    assert.ok(overflow.scroll<=width,`overflow ${lang} ${width}: ${JSON.stringify(overflow)}`);
   }
-  await check(`${lang}: independent HTML, SEO, hreflang`,async()=>{assert.ok(await page.title());assert.ok((await page.locator('meta[name="description"]').getAttribute('content')).length>30);assert.equal(await page.locator('link[hreflang]').count(),6);assert.equal(await page.locator('h1').count(),1);assert.equal(await page.locator('iframe').count(),0);const schema=JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());assert.equal(schema.geo.latitude,44.2974709);assert.ok(!schema.image);});
+  await check(`${lang}: independent HTML, SEO, hreflang, and repository paths`,async()=>{assert.ok(await page.title());assert.ok((await page.locator('meta[name="description"]').getAttribute('content')).length>30);assert.equal(await page.locator('link[hreflang]').count(),6);assert.equal(await page.locator('h1').count(),1);assert.equal(await page.locator('iframe').count(),0);const schema=JSON.parse(await page.locator('script[type="application/ld+json"]').textContent());assert.equal(schema.geo.latitude,44.2974709);assert.ok(!schema.image);assert.equal(new URL(await page.locator('link[rel="canonical"]').getAttribute('href')).pathname,`${base}${lang}/`);const wrong=await page.evaluate(base=>[...document.querySelectorAll('a[href],img[src],link[href],script[src]')].map(el=>el.href||el.src).filter(url=>url?.startsWith(location.origin)&&!new URL(url).pathname.startsWith(base)),base);assert.deepEqual(wrong,[]);});
   await revealAndLoad();
   await check(`${lang}: all local images load`,async()=>{await page.locator('img').evaluateAll(async images=>{await Promise.all(images.map(async image=>{image.loading='eager';try{await image.decode();}catch{}}));});const broken=await page.locator('img').evaluateAll(images=>images.filter(i=>!i.complete||i.naturalWidth===0).map(i=>i.src));report.brokenImages.push(...broken);assert.deepEqual(broken,[]);});
  }
@@ -52,11 +54,11 @@ try{
  await render('fr',390,844);
  await check('Mobile fullscreen menu, navigation, and focus trap',async()=>{await page.locator('.menu-toggle').click();assert.ok(await page.locator('#mobile-menu').isVisible());assert.equal(await page.locator('.menu-toggle').getAttribute('aria-expanded'),'true');assert.ok((await page.locator('#mobile-menu').boundingBox()).height>=843);await page.locator('#mobile-menu nav a[href$="#bien-etre"]').click();assert.ok(!(await page.locator('#mobile-menu').isVisible()));assert.ok(page.url().endsWith('#bien-etre'));});
  await check('Mobile swipe advances gallery',async()=>{await page.locator('[data-filter="all"]').click();await page.locator('.gallery-tile').first().click();const old=await page.locator('#lightbox-image').getAttribute('src');await page.locator('#lightbox').evaluate(el=>{const start=new Touch({identifier:1,target:el,screenX:300,screenY:200});el.dispatchEvent(new TouchEvent('touchstart',{changedTouches:[start]}));const end=new Touch({identifier:1,target:el,screenX:100,screenY:210});el.dispatchEvent(new TouchEvent('touchend',{changedTouches:[end]}));});assert.notEqual(await page.locator('#lightbox-image').getAttribute('src'),old);await page.keyboard.press('Escape');});
- await check('Language selection changes full route and persists',async()=>{await page.locator('[data-language]').selectOption('/vi/');await page.waitForURL('**/vi/**');assert.equal(await page.locator('html').getAttribute('lang'),'vi-VN');assert.ok((await page.locator('h1').textContent()).includes('an yên'));assert.equal(await page.evaluate(()=>localStorage.getItem('bastide-language')),'vi');await page.goto(origin,{waitUntil:'networkidle'});assert.ok(page.url().includes('/vi/'));});
+ await check('Language selection changes full route and persists',async()=>{await page.locator('[data-language]').selectOption(`${base}vi/`);await page.waitForURL('**/vi/**');assert.equal(await page.locator('html').getAttribute('lang'),'vi-VN');assert.ok((await page.locator('h1').textContent()).includes('an yên'));assert.equal(await page.evaluate(()=>localStorage.getItem('bastide-language')),'vi');await page.goto(rootUrl,{waitUntil:'networkidle'});assert.ok(page.url().includes(`${base}vi/`));});
  for(const lang of ['fr','vi']){await render(lang,390,844);await revealAndLoad();await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await page.waitForTimeout(350);await page.screenshot({path:`qa/mobile-${lang}.png`,fullPage:true});await page.screenshot({path:`qa/mobile-${lang}-hero.png`});}
  await page.emulateMedia({reducedMotion:'reduce'});await render('fr',390,844);
  await check('Reduced motion disables entrance and smooth scrolling',async()=>{const values=await page.evaluate(()=>({scroll:getComputedStyle(document.documentElement).scrollBehavior,animation:getComputedStyle(document.querySelector('.hero-image')).animationName,hidden:document.querySelectorAll('.reveal-ready:not(.revealed)').length}));assert.equal(values.scroll,'auto');assert.equal(values.animation,'none');assert.equal(values.hidden,0);});
- for(const info of ['legal','privacy','credits'])for(const lang of ['fr','en','nl','de','vi']){await page.goto(`${origin}/${lang}/${info}/`,{waitUntil:'networkidle'});assert.equal(await page.locator('h1').count(),1);assert.ok(await page.title());}
+ for(const info of ['legal','privacy','credits'])for(const lang of ['fr','en','nl','de','vi']){await page.goto(`${rootUrl}${lang}/${info}/`,{waitUntil:'networkidle'});assert.equal(await page.locator('h1').count(),1);assert.ok(await page.title());}
  report.checks.push('15 legal/privacy/credit pages load');
  assert.deepEqual(report.consoleErrors,[]);assert.deepEqual(report.pageErrors,[]);
  console.log('COMPLETE',report.checks.length,'checks; 35 language/viewport combinations; 15 information pages');
